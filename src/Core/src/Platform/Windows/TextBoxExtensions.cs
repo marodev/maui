@@ -15,6 +15,10 @@ namespace Microsoft.Maui
 			var brush = textStyle.TextColor.ToNative();
 			textView.Foreground = brush;
 			textView.ForegroundFocusBrush = brush;
+
+		public static void UpdateIsPassword(this MauiTextBox textBox, IEntry entry)
+		{
+			textBox.IsPassword = entry.IsPassword;
 		}
 	}
 }
