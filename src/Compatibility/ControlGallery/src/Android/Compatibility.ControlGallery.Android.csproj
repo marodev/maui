@@ -197,6 +197,10 @@
       <Project>{10553575-8e27-4e2c-9e88-90b015e80f1c}</Project>
       <Name>Compatibility.Android.AppLinks</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Core\src\netstandard\Compatibility.csproj">
+      <Project>{dfaba752-c585-4e27-b7e2-a5db0249c431}</Project>
+      <Name>Compatibility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Core\tests\Android\Compatibility.Android.UnitTests.csproj">
       <Project>{a4c57790-71d1-467c-a69e-2bd84cb6666c}</Project>
       <Name>Compatibility.Android.UnitTests</Name>

@@ -1,10 +1,16 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;$(NonNet6Platforms)</TargetFrameworks>
-    <RootNamespace>Microsoft.Maui.Controls.Compatibility</RootNamespace>
+    <RootNamespace>Microsoft.Maui.Controls.Compatibility.Hack</RootNamespace>
     <AssemblyName>Microsoft.Maui.Controls.Compatibility.Hack</AssemblyName>
     <Nullable>disable</Nullable>
     <EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) ">
+    <DefineConstants>$(DefineConstants);__ANDROID__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS')) ">
+    <DefineConstants>$(DefineConstants);__IOS__</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Microsoft.Maui.Controls.Compatibility</PackageId>
@@ -26,15 +32,9 @@
     <ProjectReference Include="..\..\..\..\Controls\src\Core\Controls.Core.csproj" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) ">
-
     <ProjectReference Include="..\Android\Compatibility.Android.csproj" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS')) ">
-
     <ProjectReference Include="..\iOS\Compatibility.iOS.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 </Project>

@@ -87,7 +87,7 @@ namespace Microsoft.Maui.Controls.Compatibility
 			var options = new InitializationOptions(MauiWinUIApplication.Current.LaunchActivatedEventArgs);
 #endif
 
-#if !NETSTANDARD2_0_OR_GREATER && !NET6_0_OR_GREATER && !NETSTANDARD2_0
+#if !NET6_0_OR_GREATER && !NETSTANDARD2_0
 
 			options.Flags |= InitializationFlags.SkipRenderers;
 
