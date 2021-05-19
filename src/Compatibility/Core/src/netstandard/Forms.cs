@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD2_0_OR_GREATER || NET6_0_OR_GREATER || NETSTANDARD2_0
+﻿#if !(__ANDROID__ || __IOS__ || WINDOWS)
 using System;
 using System.Collections.Generic;
 using System.Text;

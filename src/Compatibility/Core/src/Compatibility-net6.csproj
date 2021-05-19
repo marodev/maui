@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(MauiPlatforms)</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0;net6.0-windows10.0.18362;$(MauiPlatforms)</TargetFrameworks>
     <RootNamespace>Microsoft.Maui.Controls.Compatibility</RootNamespace>
     <AssemblyName>Microsoft.Maui.Controls.Compatibility</AssemblyName>
     <Nullable>disable</Nullable>
@@ -13,6 +13,9 @@
     <PackageId>Microsoft.Maui.Controls.Compatibility</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="$(TargetFramework.Contains('-windows')) == true ">
+    <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
+  </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework.Contains('-windows')) == true ">
     <NoWarn>$(NoWarn);CA1416;CS8305</NoWarn>
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
@@ -77,6 +80,7 @@
   <ItemGroup>
     <Compile Include="AppHostBuilderExtensions.cs" />
     <Compile Include="MauiHandlersCollectionExtensions.cs" />
+    <Compile Include="netstandard\Forms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
 

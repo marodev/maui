@@ -3,7 +3,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Plugin.CurrentActivity;
 using Microsoft.Maui.Controls.DualScreen;
 
 namespace Microsoft.Maui.Controls.Compatibility.ControlGallery.Android
@@ -34,7 +33,6 @@ namespace Microsoft.Maui.Controls.Compatibility.ControlGallery.Android
 
         public void OnActivityCreated(Activity activity, Bundle savedInstanceState)
         {
-            CrossCurrentActivity.Current.Activity = activity;
 			ActivityContext = activity;
         }
 
@@ -50,7 +48,6 @@ namespace Microsoft.Maui.Controls.Compatibility.ControlGallery.Android
 
         public void OnActivityResumed(Activity activity)
         {
-            CrossCurrentActivity.Current.Activity = activity;
 			ActivityContext = activity;
 		}
 
@@ -61,7 +58,6 @@ namespace Microsoft.Maui.Controls.Compatibility.ControlGallery.Android
 
         public void OnActivityStarted(Activity activity)
         {
-            CrossCurrentActivity.Current.Activity = activity;
 			ActivityContext = activity;
 		}
 

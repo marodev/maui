@@ -87,7 +87,7 @@ namespace Microsoft.Maui.Controls.Compatibility
 			var options = new InitializationOptions(MauiWinUIApplication.Current.LaunchActivatedEventArgs);
 #endif
 
-#if !NET6_0_OR_GREATER && !NETSTANDARD2_0
+#if __ANDROID__ || __IOS__ || WINDOWS
 
 			options.Flags |= InitializationFlags.SkipRenderers;
 
