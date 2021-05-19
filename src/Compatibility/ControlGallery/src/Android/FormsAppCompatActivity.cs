@@ -75,15 +75,7 @@ namespace Microsoft.Maui.Controls.Compatibility.ControlGallery.Android
 			// uncomment to verify turning off title bar works. This is not intended to be dynamic really.
 			//Forms.SetTitleBarVisibility (AndroidTitleBarVisibility.Never);
 
-			if (RestartAppTest.App != null)
-			{
-				_app = (App)RestartAppTest.App;
-				RestartAppTest.Reinit = true;
-			}
-			else
-			{
-				_app = new App();
-			}
+			_app = (App)Microsoft.Maui.Controls.Application.Current;
 
 			// When the native control gallery loads up, it'll let us know so we can add the nested native controls
 			MessagingCenter.Subscribe<NestedNativeControlGalleryPage>(this, NestedNativeControlGalleryPage.ReadyForNativeControlsMessage, AddNativeControls);

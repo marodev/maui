@@ -9,7 +9,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 		{
 			FormsCompatBuilder.AddRenderer(controlType, rendererType);
 
+#if !NETSTANDARD2_0_OR_GREATER && !NET6_0_OR_GREATER && !NETSTANDARD2_0
 			handlersCollection.AddHandler(controlType, typeof(RendererToHandlerShim));
+#endif
 
 			return handlersCollection;
 		}
@@ -19,8 +21,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 		{
 			FormsCompatBuilder.AddRenderer(typeof(TControlType), typeof(TRenderer));
 
+#if !NETSTANDARD2_0_OR_GREATER && !NET6_0_OR_GREATER && !NETSTANDARD2_0
 			handlersCollection.AddHandler<TMauiType, RendererToHandlerShim>();
-
+#endif
 			return handlersCollection;
 		}
 

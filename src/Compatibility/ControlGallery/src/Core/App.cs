@@ -6,14 +6,40 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls.Compatibility.ControlGallery.GalleryPages.RadioButtonGalleries;
+using Microsoft.Maui.Controls.Compatibility.ControlGallery.Issues;
 using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Hosting;
 
 namespace Microsoft.Maui.Controls.Compatibility.ControlGallery
 {
+	public class Startup : IStartup
+	{
+		public void Configure(IAppHostBuilder appBuilder)
+		{
+			//appBuilder.UseMauiApp<App>((provider) =>
+			//{
+			//	App app;
+			//	if (RestartAppTest.App != null)
+			//	{
+			//		app = (App)RestartAppTest.App;
+			//		RestartAppTest.Reinit = true;
+			//	}
+
+			//	app = new App();
+
+			//	return app;
+			//});
+
+			appBuilder
+				.UseMauiApp<App>()
+				.UseFormsCompatibility();
+		}
+	}
+
 	public class App : Application
 	{
 		public const string AppName = "CompatibilityGalleryControls";
@@ -24,20 +50,27 @@ namespace Microsoft.Maui.Controls.Compatibility.ControlGallery
 		public static List<string> AppearingMessages = new List<string>();
 
 		static Dictionary<string, string> s_config;
-		readonly ITestCloudService _testCloudService;
+		ITestCloudService _testCloudService;
 
 		public const string DefaultMainPageId = "ControlGalleryMainPage";
 
 		public static bool PreloadTestCasesIssuesList { get; set; } = true;
 		public App()
 		{
-			_testCloudService = DependencyService.Get<ITestCloudService>();
-
-			SetMainPage(CreateDefaultMainPage());
+			
 
 			//TestMainPageSwitches();
 
 			//SetMainPage(new ImageSourcesGallery());
+		}
+
+		protected override IWindow CreateWindow(IActivationState activationState)
+		{
+			Microsoft.Maui.Controls.Compatibility.Forms.Init(activationState);
+			if (_testCloudService == null)
+				_testCloudService = DependencyService.Get<ITestCloudService>();
+
+			return new Window(CreateDefaultMainPage());			
 		}
 
 		protected override void OnStart()
