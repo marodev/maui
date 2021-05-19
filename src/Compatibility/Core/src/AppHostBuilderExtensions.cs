@@ -1,9 +1,9 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Hosting;
 
 namespace Microsoft.Maui.Controls.Compatibility
@@ -99,34 +99,19 @@ namespace Microsoft.Maui.Controls.Compatibility
 
 			//Forms.Init(options);
 
-			if (UseCompatibilityRenderers)
+			if (UseCompatibilityRenderers || ScanAllAssemblies)
 			{
+
+				Assembly[] assemblies;
+
+				if (!ScanAllAssemblies)
+					assemblies = new[] { typeof(RendererToHandlerShim).Assembly };
+				else
+					assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
 				Forms.RegisterCompatRenderers(
-					new[] { typeof(RendererToHandlerShim).Assembly },
+					assemblies,
 					typeof(RendererToHandlerShim).Assembly,
-					(controlType) =>
-					{
-						foreach (var type in ControlsWithHandlers)
-						{
-							if (type.IsAssignableFrom(controlType))
-								return;
-						}
-
-						_handlers?.AddHandler(controlType, typeof(RendererToHandlerShim));
-					});
-			}
-
-			if(ScanAllAssemblies)
-			{
-				Registrar.RegisterAll(
-					AppDomain.CurrentDomain.GetAssemblies(),
-					typeof(RendererToHandlerShim).Assembly,
-					new[] {
-							typeof(ExportRendererAttribute),
-							typeof(ExportCellAttribute),
-							typeof(ExportImageSourceHandlerAttribute),
-							typeof(ExportFontAttribute)
-						}, default(InitializationFlags),
 					(controlType) =>
 					{
 						foreach (var type in ControlsWithHandlers)
