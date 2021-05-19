@@ -3,13 +3,17 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Hosting;
 
 namespace Microsoft.Maui.Controls.Compatibility
 {
 	public static class AppHostBuilderExtensions
 	{
-		public static IAppHostBuilder UseFormsCompatibility(this IAppHostBuilder builder, bool registerRenderers = true)
+		public static IAppHostBuilder UseFormsCompatibility(
+			this IAppHostBuilder builder,
+			bool registerRenderers = true,
+			bool scanAllAssemblies = false)
 		{
 			// TODO: this hideousness is just until the dynamic handler registration is merged
 			FormsCompatBuilder? compatBuilder = null;
@@ -28,6 +32,7 @@ namespace Microsoft.Maui.Controls.Compatibility
 					compatBuilder.SetHandlersCollection(handlersCollection);
 
 				compat.UseCompatibilityRenderers = registerRenderers;
+				compat.ScanAllAssemblies = scanAllAssemblies;
 			});
 
 			return builder;
@@ -64,6 +69,7 @@ namespace Microsoft.Maui.Controls.Compatibility
 		IMauiHandlersCollection? _handlers;
 
 		public bool UseCompatibilityRenderers { get; set; }
+		public bool ScanAllAssemblies { get; internal set; }
 
 		public void SetHandlersCollection(IMauiHandlersCollection handlersCollection) =>
 			_handlers = handlersCollection;
@@ -91,13 +97,36 @@ namespace Microsoft.Maui.Controls.Compatibility
 
 			options.Flags |= InitializationFlags.SkipRenderers;
 
-			Forms.Init(options);
+			//Forms.Init(options);
 
 			if (UseCompatibilityRenderers)
 			{
 				Forms.RegisterCompatRenderers(
 					new[] { typeof(RendererToHandlerShim).Assembly },
 					typeof(RendererToHandlerShim).Assembly,
+					(controlType) =>
+					{
+						foreach (var type in ControlsWithHandlers)
+						{
+							if (type.IsAssignableFrom(controlType))
+								return;
+						}
+
+						_handlers?.AddHandler(controlType, typeof(RendererToHandlerShim));
+					});
+			}
+
+			if(ScanAllAssemblies)
+			{
+				Registrar.RegisterAll(
+					AppDomain.CurrentDomain.GetAssemblies(),
+					typeof(RendererToHandlerShim).Assembly,
+					new[] {
+							typeof(ExportRendererAttribute),
+							typeof(ExportCellAttribute),
+							typeof(ExportImageSourceHandlerAttribute),
+							typeof(ExportFontAttribute)
+						}, default(InitializationFlags),
 					(controlType) =>
 					{
 						foreach (var type in ControlsWithHandlers)

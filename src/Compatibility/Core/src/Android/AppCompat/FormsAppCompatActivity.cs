@@ -182,7 +182,6 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.Android
 				
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
-			base.OnCreate(savedInstanceState);
 			OnCreate(savedInstanceState, default(ActivationFlags));
 		}
 
@@ -242,7 +241,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.Android
 			SetContentView(_layout);
 
 			Profile.FramePartition("OnStateChanged");
-			Microsoft.Maui.Controls.Application.Current = null;
+			// Microsoft.Maui.Controls.Application.Current = null;
 
 			_previousState = _currentState;
 			_currentState = AndroidApplicationLifecycleState.OnCreate;

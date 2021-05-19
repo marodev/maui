@@ -19,7 +19,12 @@ namespace Microsoft.Maui.Controls.Compatibility.ControlGallery.Android
         }
 
         public override void OnCreate()
-        {
+		{
+#if NET6_0_OR_GREATER
+			// TODO: https://github.com/dotnet/runtime/issues/51274
+			Java.Lang.JavaSystem.LoadLibrary("System.Security.Cryptography.Native.OpenSsl");
+
+#endif
             base.OnCreate();
             RegisterActivityLifecycleCallbacks(this);
             //A great place to initialize Xamarin.Insights and Dependency Services!

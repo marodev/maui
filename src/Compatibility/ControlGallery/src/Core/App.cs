@@ -13,6 +13,7 @@ using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Maui.Controls.Compatibility.ControlGallery
 {
@@ -20,23 +21,26 @@ namespace Microsoft.Maui.Controls.Compatibility.ControlGallery
 	{
 		public void Configure(IAppHostBuilder appBuilder)
 		{
-			//appBuilder.UseMauiApp<App>((provider) =>
-			//{
-			//	App app;
-			//	if (RestartAppTest.App != null)
-			//	{
-			//		app = (App)RestartAppTest.App;
-			//		RestartAppTest.Reinit = true;
-			//	}
+			appBuilder.UseMauiApp<App>((provider) =>
+			{
+				App app;
+				if (RestartAppTest.App != null)
+				{
+					app = (App)RestartAppTest.App;
+					RestartAppTest.Reinit = true;
+				}
+				else
+				{
+					app = new App();
+				}
 
-			//	app = new App();
+				return app;
+			})
+			.UseFormsCompatibility(scanAllAssemblies: true);
 
-			//	return app;
-			//});
-
-			appBuilder
-				.UseMauiApp<App>()
-				.UseFormsCompatibility();
+			//appBuilder
+			//	.UseMauiApp<App>()
+			//	.UseFormsCompatibility();
 		}
 	}
 
@@ -66,7 +70,7 @@ namespace Microsoft.Maui.Controls.Compatibility.ControlGallery
 
 		protected override IWindow CreateWindow(IActivationState activationState)
 		{
-			Microsoft.Maui.Controls.Compatibility.Forms.Init(activationState);
+			Forms.Init(activationState);
 			if (_testCloudService == null)
 				_testCloudService = DependencyService.Get<ITestCloudService>();
 

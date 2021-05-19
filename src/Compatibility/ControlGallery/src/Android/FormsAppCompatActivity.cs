@@ -52,8 +52,6 @@ namespace Microsoft.Maui.Controls.Compatibility.ControlGallery.Android
 			// At some point the Resources class types will go away so
 			// reflection will stop working
 			ResourceManager.Init(null);
-
-			Microsoft.Maui.Controls.Compatibility.Forms.Init(this, bundle);
 			FormsMaps.Init(this, bundle);
 
 #if ENABLE_TEST_CLOUD
